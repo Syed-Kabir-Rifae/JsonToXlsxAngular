@@ -48,20 +48,22 @@ public class TestExcelApplication {
 	@RequestMapping(value="/export/excel")
 	public ResponseEntity<InputStreamResource> ExportExcel() throws IOException {
 		 HttpHeaders headers =new HttpHeaders();
-		 ByteArrayInputStream b= JsonToExcel();
+     JSONParser parser = new JSONParser();
+		 String file="C:\\Users\\003C6G744\\Desktop\\Json\\Sample.json";
+		 JSONArray data = (JSONArray)parser.parse(new FileReader((file)));
+		 ByteArrayInputStream b= JsonToExcel(data);                           //Passing the variable as a parameter
 		 headers.add("Context.Disposition", "inline; filename=Excel.xlsx");
 		 return ResponseEntity.ok().headers(headers).body(new InputStreamResource(b));
 			
 			
 		}
-		private ByteArrayInputStream JsonToExcel() {
+		private ByteArrayInputStream JsonToExcel(JSONArray P) {
 
 			ByteArrayOutputStream out= new ByteArrayOutputStream();
 			try {
 				
 				//Taking Input JSON File
-				JSONParser parser = new JSONParser();
-				JSONArray a = (JSONArray)parser.parse(new FileReader(("C:\\Users\\003C6G744\\Desktop\\Json\\Sample.json")));
+				JSONArray a=P;
 				
 				//Create workbook in .xlsx format
 				Workbook workbook = new XSSFWorkbook();
@@ -141,7 +143,7 @@ public class TestExcelApplication {
 //				fileOut.close();
 //				workbook.close();
 				workbook.write(out);
-				
+				workbook.close();
 						
 			}
 			catch(Exception e) {
