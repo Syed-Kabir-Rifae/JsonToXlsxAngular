@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 
 export class DownExcelService {
-  baseUrl: String = "http://localhost:8080/export/excel";
+  baseUrl: String = "http://localhost:8080";
 
   constructor(private http: HttpClient) { }
 
